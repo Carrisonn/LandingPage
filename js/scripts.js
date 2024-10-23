@@ -139,5 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formInfo.phone = '';
         
         form.reset();
+
+        checkFormInfo();
     };
 });
