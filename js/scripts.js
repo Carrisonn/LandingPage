@@ -1,11 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-
-    const formInfo = {
-        name: '',
-        email: '',
-        password: '',
-        phone: ''
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    checkFormInfo();
+    
 
     const inputName =  document.querySelector('#name');
     const inputMail =  document.querySelector('#email');
@@ -14,15 +9,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnSubmit = document.querySelector('#submit');
     const form = document.querySelector('#form');
     const spinner = document.querySelector('#spinner');
-
-    checkFormInfo();
-
+    
     inputName.addEventListener('blur', validate);
     inputMail.addEventListener('blur', validate);
     inputPassword.addEventListener('blur', validate);
     inputPhone.addEventListener('blur', validate);
-
     form.addEventListener('submit', submitForm);
+    
+
+    const formInfo = {
+        name: '',
+        email: '',
+        password: '',
+        phone: ''
+    }
 
 
     function validate(event) {
@@ -62,84 +62,79 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         formInfo[event.target.name] = event.target.value.trim().toLowerCase();
-
         checkFormInfo();
     };
-
-    function showAlert(message, referenceParent) {
-        cleanAlert(referenceParent);
-
-        const msgError = document.createElement('P');
-        msgError.textContent =  message;
-        msgError.classList.add('error');
-        
-        referenceParent.appendChild(msgError);
-
-        setTimeout(() => {
-            msgError.remove();
-        }, 5000);
-    };
-
-    function cleanAlert(referenceParent) {
-        const alert = referenceParent.querySelector('.error');
-        
-        if(alert) {
-            alert.remove();
-        }
-    };
-
+    
     function validateEmail(email) {
         const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
         const result = regex.test(email);
         return result;
     };
-
+    
     function validatePassword(password) {
         const regex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
         const result = regex.test(password);
         return result;
     };
-
+    
     function validatePhone(phone) {
         const regex = /^[6789]\d{8}$/;
         const result = regex.test(phone);
         return result;
     };
-
+    
     function checkFormInfo() {
         if(Object.values(formInfo).includes('')) {
             btnSubmit.classList.add('disabled');
             btnSubmit.disabled = true;
-            return
         } else {
             btnSubmit.classList.remove('disabled');
             btnSubmit.disabled =  false;
         }
     };
-
+    
     function submitForm(event) {
         event.preventDefault();
-
+        
         spinner.classList.remove('hide-spinner');
-
+        
         setTimeout(() => {
             spinner.classList.add('hide-spinner');
-
+            
             Swal.fire({
                 title: "Success!",
                 text: "You suscribed to our News Letter!",
                 icon: "success",
-                confirmButtonText: "Nice!"
+                confirmButtonText: "Nice!",
+                allowOutsideClick: false
             });
         }, 3000);
-
+        
         formInfo.name = '';
         formInfo.email = '';
         formInfo.password = '';
         formInfo.phone = '';
         
         form.reset();
-
+        
         checkFormInfo();
+    };
+
+    function showAlert(message, referenceParent) {
+        cleanAlert(referenceParent);
+    
+        const msgError = document.createElement('P');
+        msgError.textContent =  message;
+        msgError.classList.add('error');
+        referenceParent.appendChild(msgError);
+    
+        setTimeout(() => {
+            msgError.remove();
+        }, 4000);
+    };
+    
+    function cleanAlert(referenceParent) {
+        const alert = referenceParent.querySelector('.error');
+        alert ? alert.remove() : null;
     };
 });
