@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    checkFormInfo();
-    
-
     const inputName =  document.querySelector('#name');
     const inputMail =  document.querySelector('#email');
     const inputPassword = document.querySelector('#password');
@@ -16,19 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
     inputPhone.addEventListener('blur', validate);
     form.addEventListener('submit', submitForm);
     
-
     const formInfo = {
         name: '',
         email: '',
         password: '',
         phone: ''
     }
-
+    
+    window.addEventListener('load', () => checkFormInfo(), form.reset());
+    
 
     function validate(event) {
         if(event.target.value.trim() === '') {
             showAlert(`The ${event.target.id} is mandatory`, event.target.parentElement);
-            formInfo[event.target.name] = '';
             checkFormInfo();
             return;
         }
@@ -36,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(event.target.id === 'name' && event.target.value.length > 30) {
             showAlert('Your name is too long', event.target.parentElement);
             formInfo[event.target.name] = '';
+            inputName.value = '';
             checkFormInfo();
             return;
         }
@@ -43,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(event.target.id === 'email' && !validateEmail(event.target.value)) {
             showAlert('Invalid email', event.target.parentElement);
             formInfo[event.target.name] = '';
+            inputMail.value = '';
             checkFormInfo();
             return;
         }
@@ -50,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(event.target.id === 'password' && !validatePassword(event.target.value)) {
             showAlert('The password must contain between 8 and 16 characters, at least one digit, at least one lowercase and at least one uppercase letter.', event.target.parentElement)
             formInfo[event.target.name] = '';
+            inputPassword.value = '';
             checkFormInfo();
             return;
         }
@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(event.target.id === 'phone' && !validatePhone(event.target.value)) {
             showAlert('The number must contain 9 digits or is an invalid number', event.target.parentElement);
             formInfo[event.target.name] = '';
+            inputPhone.value = '';
             checkFormInfo();
             return;
         }
@@ -108,15 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmButtonText: "Nice!",
                 allowOutsideClick: false
             });
-        }, 3000);
+        }, 4000);
         
-        formInfo.name = '';
-        formInfo.email = '';
-        formInfo.password = '';
-        formInfo.phone = '';
-        
+        Object.keys(formInfo).forEach(key => formInfo[key] = '');
         form.reset();
-        
         checkFormInfo();
     };
 
